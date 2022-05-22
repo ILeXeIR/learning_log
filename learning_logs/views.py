@@ -91,4 +91,20 @@ def edit_entry(request, entry_id):
 
 	context = {'entry': entry, 'topic': topic, 'form': form}
 	return render(request, 'learning_logs/edit_entry.html', context)
-	
+
+@login_required
+def delete_entry(request, entry_id):
+	#Удаляет существующую запись
+	entry = get_object_or_404(Entry, id=entry_id)
+	topic = entry.topic
+	check_topic_owner(topic.owner, request.user)
+	entry.delete()
+	return redirect('learning_logs:topic', topic_id=topic.id)
+
+@login_required
+def delete_topic(request, topic_id):
+	#Удаляет существующую тему
+	topic = get_object_or_404(Topic, id=topic_id)
+	check_topic_owner(topic.owner, request.user)
+	topic.delete()
+	return redirect('learning_logs:topics')

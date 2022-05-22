@@ -17,4 +17,8 @@ urlpatterns = [
 	path('new_entry/<int:topic_id>/', views.new_entry, name='new_entry'),
 	#Страница для редактирования записей
 	path('edit_entry/<int:entry_id>/', views.edit_entry, name='edit_entry'),
+	#Удаление записи
+	path('edit_entry/<int:entry_id>/delete/', views.delete_entry, name='delete_entry'),
+	#Удаление темы
+	path('topics/<int:topic_id>/delete/', views.delete_topic, name='delete_topic'),
 ]

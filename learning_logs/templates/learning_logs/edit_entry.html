@@ -3,6 +3,9 @@
 
 {% block page_header %}
   <h2><a href="{% url 'learning_logs:topic' topic.id %}">{{ topic }}</a></h2>
+  <p>
+  <a href="{% url 'learning_logs:delete_entry' entry.id %}">Delete this entry</a>
+  </p>
   <h4>Edit entry:</h4>
 {% endblock page_header %}
 

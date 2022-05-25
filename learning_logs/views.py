@@ -73,6 +73,26 @@ def new_entry(request, topic_id):
 	return render(request,'learning_logs/new_entry.html', context)
 
 @login_required
+def edit_topic(request, topic_id):
+	#Редактирует сущестующую тему
+	topic = get_object_or_404(Topic, id=topic_id)
+	check_topic_owner(topic.owner, request.user)
+
+	if request.method != 'POST':
+		#Исходный запрос, форма заполняется данными текущей записи.
+		form = TopicForm(instance=topic)
+	else:
+		#Отправка данных POST, обработать данные.
+		form = TopicForm(instance=topic, data=request.POST)
+		if form.is_valid():
+			form.save()
+			return redirect('learning_logs:topic', topic_id=topic.id)
+
+	#Вывести пустую или недействительную форму.
+	context = {'topic': topic, 'form': form}
+	return render(request,'learning_logs/edit_topic.html', context)
+
+@login_required
 def edit_entry(request, entry_id):
 	#Редактирует существующую запись
 	entry = get_object_or_404(Entry, id=entry_id)

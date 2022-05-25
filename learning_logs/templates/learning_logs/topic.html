@@ -3,13 +3,16 @@
 {% block page_header %}
   <h3>{{ topic }}</h3>
   <p align="right">
-  <a href="{% url 'learning_logs:delete_topic' topic.id %}">Delete this topic</a>
+    <a href="{% url 'learning_logs:edit_topic' topic.id %}">Edit topic</a>
+  </p>
+  <p align="right">
+    <a href="{% url 'learning_logs:delete_topic' topic.id %}">Delete this topic</a>
   </p>
 {% endblock page_header %}
 
 {% block content %}
   <p>
-	<a href="{% url 'learning_logs:new_entry' topic.id %}">Add new entry</a>
+	  <a href="{% url 'learning_logs:new_entry' topic.id %}">Add new entry</a>
   </p>
   {% for entry in entries %}
 	<div class="card mb-3">

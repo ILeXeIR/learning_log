@@ -18,16 +18,22 @@ def check_topic_owner(owner, user):
 
 @login_required
 def topics(request):
-	#Выводит список тем
+	#Выводит список своих тем
 	topics = Topic.objects.filter(owner=request.user).order_by('date_added')
 	context = {'topics': topics}
 	return render(request, 'learning_logs/topics.html', context)
 
-@login_required
+def public_topics(request):
+	#Выводит список публичных тем
+	topics = Topic.objects.filter(public=True).order_by('date_added')
+	context = {'topics': topics}
+	return render(request, 'learning_logs/public_topics.html', context)
+
 def topic(request, topic_id):
 	#Выводит одну тему и все ее записи.
 	topic = get_object_or_404(Topic, id=topic_id)
-	check_topic_owner(topic.owner, request.user)
+	if not topic.public:
+		check_topic_owner(topic.owner, request.user)
 	entries = topic.entry_set.order_by('-date_added')
 	context = {'topic': topic, 'entries': entries}
 	return render(request, 'learning_logs/topic.html', context)

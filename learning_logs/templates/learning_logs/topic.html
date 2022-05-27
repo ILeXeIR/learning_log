@@ -2,27 +2,34 @@
 
 {% block page_header %}
   <h3>{{ topic }}</h3>
-  <p align="right">
-    <a href="{% url 'learning_logs:edit_topic' topic.id %}">Edit topic</a>
-  </p>
-  <p align="right">
-    <a href="{% url 'learning_logs:delete_topic' topic.id %}">Delete this topic</a>
-  </p>
+  {% if user == topic.owner %}
+    <p align="right">
+      <a href="{% url 'learning_logs:edit_topic' topic.id %}">Edit topic</a>
+    </p>
+    <p align="right">
+      <a href="{% url 'learning_logs:delete_topic' topic.id %}">Delete this topic</a>
+    </p>
+  {% endif %}
 {% endblock page_header %}
 
 {% block content %}
-  <p>
-	  <a href="{% url 'learning_logs:new_entry' topic.id %}">Add new entry</a>
-  </p>
+  {% if user == topic.owner %}
+    <p>
+	    <a href="{% url 'learning_logs:new_entry' topic.id %}">Add new entry</a>
+    </p>
+  {% endif %}
   {% for entry in entries %}
 	<div class="card mb-3">
 	  <h4 class="card-header">
 	  	{{ entry.date_added|date:'M d, Y H:i' }}
-	  	<small><a href="{% url 'learning_logs:edit_entry' entry.id %}">
-	  	  Edit entry</a></small>
-	  	<small>
-	  		<a href="{% url 'learning_logs:delete_entry' entry.id %}">Delete entry</a>
-	  	</small>
+	  	{% if user == topic.owner %}
+	  	  <small>
+	  	  	<a href="{% url 'learning_logs:edit_entry' entry.id %}">Edit entry</a>
+	  	  </small>
+	  	  <small>
+	  		  <a href="{% url 'learning_logs:delete_entry' entry.id %}">Delete entry</a>
+	  	  </small>
+	  	{% endif %}
 	  </h4>
 	  <div class="card-body">
 	  	{{ entry.text|linebreaks }}
